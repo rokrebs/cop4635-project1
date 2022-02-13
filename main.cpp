@@ -13,7 +13,6 @@
 #include <unistd.h>
 
 // read a file into memory
-//#include <fstream>  // std::ifstream
 #include <iostream> // std::cout
 
 #include <sys/wait.h>
@@ -31,6 +30,7 @@ struct sockaddr_in address;
 int addressLen = sizeof(address);
 
 void server();
+
 void server() {
     // creating socket file descriptor
     cout << "Server started." << endl;
@@ -59,8 +59,9 @@ void server() {
 
 
 int main() {
+
     server();
-    // handle the connection
+
     while (1) { // run forever
 
         // accept connections from client

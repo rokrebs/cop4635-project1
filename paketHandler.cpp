@@ -34,12 +34,13 @@ void paketHandler::setRequest() {
 }
 
 /*
- * function to set the type and the correspoing status of the response
+ * function to set the type and the corresponding status of the response
  */
 void paketHandler::setTypeStatus() {
-    if (r.uri == "/index.html") {
+    if (r.uri == "/") {
         a.status = "200";
         a.msg = "OK";
+        r.uri = "/index.html";
         readFile(r.uri);
         setHtml();
         return;
@@ -57,9 +58,7 @@ void paketHandler::setTypeStatus() {
         return;
     } else {
         a.status = "404";
-        a.msg = "NOT FOUND\n";
-        r.uri = "/fake.html";
-        readFile(r.uri);
+        a.msg = "Not Found\n";
         setErr();
         return;
     }
@@ -92,22 +91,15 @@ void paketHandler::setHtml() {
     ss << "\n\n";
     ss << a.content;
     responseToClient = ss.str();
-    cout << "sent html file" << endl;
+    cout << "sent "<< r.uri<<" file" << endl;
 }
 
 /*
  * function to set the error response for the client
  */
 void paketHandler::setErr() {
-    stringstream ss;
-    ss << a.protocolV << " " << a.status << " " << a.msg << "\n";
-    ss << "Content-Type: texte/html\n";
-    ss << "Content-Length: ";
-    ss << a.length;
-    ss << "\n\n";
-    ss << a.content;
-    responseToClient = ss.str();
-    cout << "Error: Not found" << endl;
+    responseToClient = "HTTP/1.1 404 Not Found\nContent-Type: text/plain\nContent-Length: 21\n\nERROR: 404 NOT FOUND.";
+    cout << "sent error message "<< endl;
 }
 
 /*
